@@ -1,4 +1,4 @@
-CFLAGS = -std=c99 -pedantic -Wall -Wshadow -Wpointer-arith -Wcast-qual \
+CFLAGS = -std=c89 -pedantic -Wall -Wshadow -Wpointer-arith -Wcast-qual \
          -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement \
          -Wextra
 
