@@ -788,6 +788,17 @@ error:
 }
 
 /*
+Add the request to the syslog
+*/
+static void http_add_syslog(const char *buf, ssize_t buflen)
+{
+    char logentry[MAX_REQUEST_LEN + 1] = {0};
+    memcpy(logentry, buf, buflen);
+    logentry[buflen] = 0;
+    syslog(LOG_INFO, "%s", logentry);
+}
+
+/*
 Handle a new http connection
 */
 static void *http_handle_connection(void *thread_conn)
@@ -795,7 +806,7 @@ static void *http_handle_connection(void *thread_conn)
     struct http_conn *conn = (struct http_conn*)thread_conn;
     do {
         if (http_receive_request(conn) == 0) {
-            syslog(LOG_INFO, "%s", conn->buf);
+            http_add_syslog(conn->buf, conn->end - conn->buf);
             net_cork(conn->fd);
             http_process_request(conn);
             net_uncork(conn->fd);
