@@ -1,3 +1,4 @@
+CC = gcc
 CFLAGS = -std=c89 -pedantic -Wall -Wshadow -Wpointer-arith -Wcast-qual \
          -Wstrict-prototypes -Wmissing-prototypes -Wdeclaration-after-statement \
          -Wextra

@@ -169,7 +169,7 @@ static struct file_info *file_info_new(struct http_conn *conn);
 
 #define strnull(s) ((s) == NULL || (s)[0] == '\0')
 #define closefd(fd) do { if(fd != -1) (void)close((fd)); fd = -1; } while(0)
-#define badchar(c) (((c) < 0x20 && c != 0x0d && c != 0x0a) || c == 0x7f)
+#define badchar(c) (((c) < ' ' && c != '\r' && c != '\n') || c == 0x7f)
 #ifdef DEBUG
     #define check(x)\
     if (!(x)) {\
@@ -245,6 +245,10 @@ static int net_url_decode(char *url, int len,
             check(!badchar(*end));
             ++end;
             url += 3;
+        } else if (*url == '+') {
+            *end = ' ';
+            ++end;
+            ++url;
         } else {
             *end++ = *url++;
         }
