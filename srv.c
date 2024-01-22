@@ -637,12 +637,12 @@ static char *http_next_line(char *p, char *end)
     for (;p < end; ++p) {
         check(p < end);
         check(!badchar(*p));
-        if (*p == 0x0d) {
+        if (*p == '\r') {
             ++p;
             check(p < end);
-            check(*p == 0x0a);
+            check(*p == '\n');
             break;
-        } else if (*p == 0x0a) {
+        } else if (*p == '\n') {
             break;
         }
     }
@@ -658,7 +658,7 @@ Find the next end of line character, either \r or \n
 */
 static char *http_next_eol_char(char *p, char *end)
 {
-    for (;p < end && *p != 0x0d && *p != 0x0a; ++p) {
+    for (;p < end && *p != '\r' && *p != '\n' ; ++p) {
         check(!badchar(*p));
     }
     return p;
@@ -701,7 +701,7 @@ static int http_parse_request(struct http_conn *conn)
             conn->headers[i].name = name;
             conn->headers[i].namelen = val - name - 1;
             check(conn->headers[i].namelen > 0);
-            for(; *val == ' ' || *val =='\t'; ++val) {
+            for(; *val == ' ' || *val == '\t'; ++val) {
                 check(val < end && !badchar(*val));
             }
         }
