@@ -110,7 +110,7 @@ static void http_conn_free(struct http_conn *conn);
 static struct http_conn *http_conn_new(int fd);
 static const char *http_status_reason(int code);
 static int http_send_response(struct http_conn *conn, const char *content_type,
-                              size_t content_length);
+        size_t content_length);
 static int http_send_error(struct http_conn *conn);
 static int8_t http_parse_method(const char *buf);
 static int http_parse_version(const char *v);
@@ -155,7 +155,7 @@ static const char *get_mime_type(const char *filename);
 /*-----------------------------------------------------------------------*/
 static char *path_canonical(const char *path);
 static char *path_concat(const char *path1, size_t path1len,
-              const char *path2, size_t path2len);
+        const char *path2, size_t path2len);
 
 /*-----------------------------------------------------------------------*/
 /*   FILE                                                                */
@@ -321,7 +321,8 @@ error:
 /*
 Accept and configure a tcp connection
 */
-static int net_sock_accept(int sockfd, int timeout_sec, struct sockaddr_storage *client)
+static int net_sock_accept(int sockfd, int timeout_sec,
+    struct sockaddr_storage *client)
 {
     int on = 1;
     int new_fd;
@@ -385,7 +386,8 @@ static void http_new_connection(int lfd)
 
     check((afd = net_sock_accept(lfd, RCVTIMEO_SEC, &client)));
     check((conn = http_conn_new(afd)));
-    inet_ntop(AF_INET, &((struct sockaddr_in *)&client)->sin_addr, conn->cip, sizeof(conn->cip));
+    inet_ntop(AF_INET, &((struct sockaddr_in *)&client)->sin_addr,
+            conn->cip, sizeof(conn->cip));
 
     check(thread_new(http_handle_connection, conn) == 0);
     return;
@@ -917,7 +919,8 @@ static struct file_info *file_info_new(struct http_conn *conn)
     check(decoded_uri);
 
     conn->status = 404;
-    fi->path = path_concat(config.docroot, config.docroot_len, decoded_uri, decoded_uri_len);
+    fi->path = path_concat(config.docroot, config.docroot_len,
+            decoded_uri, decoded_uri_len);
     check(fi->path);
 
     if(chdir(fi->path) == 0) {
@@ -1054,7 +1057,8 @@ int main(int argc, char **argv)
 
     check_msg(!strnull(config.docroot), "Invalid document root");
     config.docroot_len = strlen(config.docroot);
-    check_msg(chdir(config.docroot) == 0, "Unable to change directory to document root");
+    check_msg(chdir(config.docroot) == 0,
+            "Unable to change directory to document root");
 
     pw = getpwnam(config.username);
     check_msg(pw, "Failed to get uid");
@@ -1065,7 +1069,7 @@ int main(int argc, char **argv)
 
     for (;;) {
         thread_cond_wait(thread_count_cond, thread_count_mutex,
-                        (thread_count == config.thread_count_max));
+                (thread_count == config.thread_count_max));
         http_new_connection(lfd);
     }
     syslog(LOG_INFO, "normal exit");
