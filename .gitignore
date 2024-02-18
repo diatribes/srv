@@ -1,4 +1,5 @@
 srv
+.vscode/
 
 # Prerequisites
 *.d
