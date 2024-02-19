@@ -141,6 +141,7 @@ static struct mime_type {
     {".h",    MIME_TYPE_TEXT_PLAIN},
     {".asm",  MIME_TYPE_TEXT_PLAIN},
     {".fs" ,  MIME_TYPE_TEXT_PLAIN},
+    {".vs" ,  MIME_TYPE_TEXT_PLAIN},
     {".js",   "text/javascript"},
     {".wasm" ,"application/wasm"},
     {".css" , "text/css; charset=utf-8"},
