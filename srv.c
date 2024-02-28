@@ -802,10 +802,12 @@ Add the request to the syslog
 */
 static void http_add_syslog(const char *buf, ssize_t buflen)
 {
-    char logentry[MAX_REQUEST_LEN + 1] = {0};
-    memcpy(logentry, buf, buflen);
-    logentry[buflen] = 0;
-    syslog(LOG_INFO, "%s", logentry);
+    if (buflen <= MAX_REQUEST_LEN) {
+        char logentry[MAX_REQUEST_LEN + 1] = {0};
+        memcpy(logentry, buf, buflen);
+        logentry[buflen] = 0;
+        syslog(LOG_INFO, "%s", logentry);
+    }
 }
 
 /*
